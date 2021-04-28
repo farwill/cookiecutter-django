@@ -10,6 +10,10 @@ RUN apt-get update \
     && apt-get install -y libpq-dev \
     # Translations dependencies
     && apt-get install -y gettext \
+    {%- if cookiecutter.use_django_auth_ldap == "y" %}
+    # For python-ldap
+    && apt-get install -y libsasl2-dev python3-dev libldap2-dev libssl-dev \
+    {%- endif %}
     # Uncomment below lines to enable Sphinx output to latex and pdf
     # && apt-get install -y texlive-latex-recommended \
     # && apt-get install -y texlive-fonts-recommended \
