@@ -333,3 +333,6 @@ MailHog
 {% if cookiecutter.use_docker == 'y' %}
 .ipython/
 {%- endif %}
+
+!.envs/.production/
+backups/
