@@ -1,18 +1,18 @@
-cookiecutter==1.7.2
-sh==1.14.1
+cookiecutter==1.7.3
+sh==1.14.2
 binaryornot==0.4.4
 
 # Code quality
 # ------------------------------------------------------------------------------
-black==21.4b2
+black==21.5b1
 isort==5.8.0
-flake8==3.9.1
+flake8==3.9.2
 flake8-isort==4.0.0
 pre-commit==2.12.1
 
 # Testing
 # ------------------------------------------------------------------------------
-tox==3.23.0
+tox==3.23.1
 pytest==5.4.3  # pyup: <6  # https://github.com/hackebrot/pytest-cookies/issues/51
 pytest-cookies==0.5.1
 pytest-instafail==0.4.2
