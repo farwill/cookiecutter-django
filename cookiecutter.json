@@ -7,17 +7,17 @@
   "email": "{{ cookiecutter.author_name.lower()|replace(' ', '-') }}@example.com",
   "version": "0.1.0",
   "open_source_license": [
+    "Not open source",
     "MIT",
     "BSD",
     "GPLv3",
-    "Apache Software License 2.0",
-    "Not open source"
+    "Apache Software License 2.0"
   ],
   "timezone": "UTC",
   "windows": "n",
   "use_django_auth_ldap": "n",
   "use_pycharm": "n",
-  "use_docker": "n",
+  "use_docker": "y",
   "postgresql_version": [
     "12.3",
     "11.8",
@@ -26,39 +26,39 @@
     "9.5"
   ],
   "js_task_runner": [
-    "None",
-    "Gulp"
+    "Gulp",
+    "None"
   ],
   "cloud_provider": [
-    "AWS",
     "GCP",
+    "AWS",
     "None"
   ],
   "mail_service": [
+    "SendinBlue",
     "Mailgun",
     "Amazon SES",
     "Mailjet",
     "Mandrill",
     "Postmark",
     "Sendgrid",
-    "SendinBlue",
     "SparkPost",
     "Other SMTP"
   ],
-  "use_async": "n",
-  "use_drf": "n",
-  "custom_bootstrap_compilation": "n",
-  "use_compressor": "n",
-  "use_celery": "n",
-  "use_mailhog": "n",
-  "use_sentry": "n",
-  "use_whitenoise": "n",
-  "use_heroku": "n",
+  "use_async": "y",
+  "use_drf": "y",
+  "custom_bootstrap_compilation": "y",
+  "use_compressor": "y",
+  "use_celery": "y",
+  "use_mailhog": "y",
+  "use_sentry": "y",
+  "use_whitenoise": "y",
+  "use_heroku": "y",
   "ci_tool": [
+    "Github",
     "None",
     "Travis",
-    "Gitlab",
-    "Github"
+    "Gitlab"
   ],
   "keep_local_envs_in_vcs": "y",
   "debug": "n"
