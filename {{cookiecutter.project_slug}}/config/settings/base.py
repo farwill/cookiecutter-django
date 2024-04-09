@@ -396,12 +396,6 @@ WEBPACK_LOADER = {
 {%- if cookiecutter.use_django_auth_ldap == "y" %}
 # LDAP settings
 
-# Keep ModelBackend around for per-user permissions and maybe a local
-# superuser.
-AUTHENTICATION_BACKENDS = (
-    "django_auth_ldap.backend.LDAPBackend",
-    "django.contrib.auth.backends.ModelBackend",
-)
 # Baseline configuration.
 AUTH_LDAP_SERVER_URI = env("AUTH_LDAP_SERVER_URI") # "ldap://ip_address:3268"
 
