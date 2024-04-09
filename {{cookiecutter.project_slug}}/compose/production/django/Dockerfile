@@ -38,7 +38,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential \
   # psycopg dependencies
   libpq-dev
-
+{%- if cookiecutter.use_django_auth_ldap == "y" %}
+# For python-ldap
+RUN apt-get install -y libsasl2-dev python3-dev libldap2-dev libssl-dev
+{%- endif %}
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
 

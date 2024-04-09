@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential \
   # psycopg dependencies
   libpq-dev \
+{%- if cookiecutter.use_django_auth_ldap == "y" %}
+  # For python-ldap
+  libsasl2-dev python3-dev libldap2-dev libssl-dev \
+{%- endif %}
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*

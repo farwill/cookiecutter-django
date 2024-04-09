@@ -4,7 +4,10 @@
 from pathlib import Path
 
 import environ
-
+{%- if cookiecutter.use_django_auth_ldap == "y" %}
+import ldap
+from django_auth_ldap.config import LDAPSearch
+{%- endif %}
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # {{ cookiecutter.project_slug }}/
 APPS_DIR = BASE_DIR / "{{ cookiecutter.project_slug }}"
@@ -116,6 +119,9 @@ MIGRATION_MODULES = {"sites": "{{ cookiecutter.project_slug }}.contrib.sites.mig
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
+    {%- if cookiecutter.use_django_auth_ldap == "y" %}
+    "django_auth_ldap.backend.LDAPBackend",
+    {%- endif %}
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
@@ -386,6 +392,66 @@ WEBPACK_LOADER = {
     },
 }
 
+{%- endif %}
+{%- if cookiecutter.use_django_auth_ldap == "y" %}
+# LDAP settings
+
+# Keep ModelBackend around for per-user permissions and maybe a local
+# superuser.
+AUTHENTICATION_BACKENDS = (
+    "django_auth_ldap.backend.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend",
+)
+# Baseline configuration.
+AUTH_LDAP_SERVER_URI = env("AUTH_LDAP_SERVER_URI") # "ldap://ip_address:3268"
+
+AUTH_LDAP_CONNECTION_OPTIONS = {ldap.OPT_REFERRALS: 0}
+AUTH_LDAP_BIND_DN = (
+    "CN=ldap_server,OU=System Users,OU=Other Users,OU=OU-NAME-TPE,DC=company,DC=com"
+)
+AUTH_LDAP_BIND_PASSWORD = env("AUTH_LDAP_BIND_PASSWORD")
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    ldap.SCOPE_SUBTREE,
+    "(sAMAccountName=%(user)s)",
+)
+# Or:
+# AUTH_LDAP_USER_DN_TEMPLATE = 'uid=%(user)s,ou=users,dc=example,dc=com'
+
+# Set up the basic group parameters.
+# AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+#     'ou=django,ou=groups,dc=example,dc=com',
+#     ldap.SCOPE_SUBTREE,
+#     '(objectClass=groupOfNames)',
+# )
+# AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr='cn')
+
+# Simple group restrictions
+# AUTH_LDAP_REQUIRE_GROUP = 'cn=enabled,ou=django,ou=groups,dc=example,dc=com'
+# AUTH_LDAP_DENY_GROUP = 'cn=disabled,ou=django,ou=groups,dc=example,dc=com'
+
+# Populate the Django user from the LDAP directory.
+AUTH_LDAP_USER_ATTR_MAP = {
+    "username": "sAMAccountName",
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
+
+# AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+#     'is_active': 'cn=active,ou=django,ou=groups,dc=example,dc=com',
+#     'is_staff': 'cn=staff,ou=django,ou=groups,dc=example,dc=com',
+#     'is_superuser': 'cn=superuser,ou=django,ou=groups,dc=example,dc=com',
+# }
+
+# This is the default, but I like to be explicit.
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
+
+# Use LDAP group membership to calculate group permissions.
+# AUTH_LDAP_FIND_GROUP_PERMS = True
+
+# Cache distinguised names and group memberships for an hour to minimize
+# LDAP traffic.
+AUTH_LDAP_CACHE_TIMEOUT = 3600
 {%- endif %}
 # Your stuff...
 # ------------------------------------------------------------------------------

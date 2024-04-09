@@ -45,6 +45,10 @@ django-cors-headers==4.3.1  # https://github.com/adamchainz/django-cors-headers
 # DRF-spectacular for api documentation
 drf-spectacular==0.27.2  # https://github.com/tfranzel/drf-spectacular
 {%- endif %}
+{%- if cookiecutter.use_django_auth_ldap == "y" %}
+# django-auth-ldap
+django-auth-ldap==4.0.0  # https://github.com/django-auth-ldap/django-auth-ldap
+{%- endif %}
 {%- if cookiecutter.frontend_pipeline == 'Webpack' %}
 django-webpack-loader==3.1.0  # https://github.com/django-webpack/django-webpack-loader
 {%- endif %}

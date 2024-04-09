@@ -16,6 +16,7 @@
   "username_type": ["username", "email"],
   "timezone": "UTC",
   "windows": "n",
+  "use_django_auth_ldap": "n",
   "editor": ["None", "PyCharm", "VS Code"],
   "use_docker": "n",
   "postgresql_version": ["16", "15", "14", "13", "12"],
