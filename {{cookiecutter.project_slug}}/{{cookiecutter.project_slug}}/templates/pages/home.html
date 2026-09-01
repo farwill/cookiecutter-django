@@ -1,29 +1,29 @@
 {% raw %}{% extends "base.html" %}
 
 {% endraw %}
-{%- if cookiecutter.use_htmx_alpine == 'y' %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
 {% raw %}
 {% block content %}
   <p>Use this document as a way to quick start any new project.</p>
-  <div class="card my-4">
-    <div class="card-body">
-      <h2 class="h5 card-title">HTMX + Alpine.js</h2>
-      <div class="mb-3" x-data="{ count: 0 }">
-        <p class="mb-2">
-          Alpine.js counter: <strong x-text="count"></strong>
-        </p>
-        <button class="btn btn-primary btn-sm" type="button" @click="count++">Increment</button>
-      </div>
-      <p class="text-muted small mb-0">
-        HTMX is available on every page. Use
-        <code>hx-get</code>
-        /
-        <code>hx-post</code>
-        in templates and
-        <code>request.htmx</code>
-        in views.
+  <div class="my-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+    <h2 class="mb-3 text-lg font-semibold text-gray-900">HTMX + Alpine.js + Tailwind CSS</h2>
+    <div class="mb-4" x-data="{ count: 0 }">
+      <p class="mb-2 text-gray-700">
+        Alpine.js counter: <strong x-text="count"></strong>
       </p>
+      <button class="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
+              type="button"
+              @click="count++">Increment</button>
     </div>
+    <p class="text-sm text-gray-500">
+      HTMX is available on every page. Use
+      <code class="rounded bg-gray-100 px-1">hx-get</code>
+      /
+      <code class="rounded bg-gray-100 px-1">hx-post</code>
+      in templates and
+      <code class="rounded bg-gray-100 px-1">request.htmx</code>
+      in views.
+    </p>
   </div>
 {% endblock content %}
 {% endraw %}

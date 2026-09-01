@@ -2,8 +2,8 @@
 {% load crispy_forms_tags %}
 
 {% if attrs.type == "textarea" %}
-  <div class="row mb-3">
-    <div class="col-sm-10">
+  <div class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mb-3{% else %}row mb-3{% endif %}{% raw %}">
+    <div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="col-sm-10"{% endif %}{% raw %}>
       <label for="{{ attrs.id }}">
         {% slot label %}
       {% endslot %}
@@ -17,12 +17,12 @@
             {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
             {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
             {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
-            class="form-control">{% slot value %}{% endslot %}</textarea>
+            class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500{% else %}form-control{% endif %}{% raw %}">{% slot value %}{% endslot %}</textarea>
 </div>
 {% elif attrs.type == "radio" %}
-<div class="row mb-3">
-  <div class="col-sm-10">
-    <div class="form-check">
+<div class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mb-3{% else %}row mb-3{% endif %}{% raw %}">
+  <div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="col-sm-10"{% endif %}{% raw %}>
+    <div class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}flex items-center gap-2{% else %}form-check{% endif %}{% raw %}">
       <input {% if attrs.required %}required{% endif %}
              {% if attrs.disabled %}disabled{% endif %}
              {% if attrs.readonly %}readonly{% endif %}
@@ -33,7 +33,7 @@
              {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
              value="{{ attrs.value|default_if_none:"" }}"
              type="{{ attrs.type }}" />
-      <label class="form-check-label" for="{{ attrs.id }}">
+      <label class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}text-sm text-gray-700{% else %}form-check-label{% endif %}{% raw %}" for="{{ attrs.id }}">
         {% slot label %}
       {% endslot %}
     </label>
@@ -41,13 +41,13 @@
 </div>
 </div>
 {% else %}
-<div class="col-sm-10">
+<div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="col-sm-10"{% endif %}{% raw %}>
   <label for="{{ attrs.id }}">
     {% slot label %}
   {% endslot %}
 </label>
 </div>
-<div class="col-sm-10">
+<div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="col-sm-10"{% endif %}{% raw %}>
   <input {% if attrs.required %}required{% endif %}
          {% if attrs.disabled %}disabled{% endif %}
          {% if attrs.readonly %}readonly{% endif %}
@@ -58,9 +58,9 @@
          {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
          value="{{ attrs.value|default_if_none:"" }}"
          type="{{ attrs.type }}"
-         class="form-control" />
+         class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500{% else %}form-control{% endif %}{% raw %}" />
 </div>
 {% endif %}
 {% if slots.help_text %}
-  <div class="form-text">{% slot help_text %}{% endslot %}</div>
+  <div class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mt-1 text-sm text-gray-500{% else %}form-text{% endif %}{% raw %}">{% slot help_text %}{% endslot %}</div>
 {% endif %}{% endraw %}

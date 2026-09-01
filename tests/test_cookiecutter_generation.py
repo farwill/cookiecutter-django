@@ -118,8 +118,8 @@ SUPPORTED_COMBINATIONS = [
     {"frontend_pipeline": "Django Compressor"},
     {"frontend_pipeline": "Gulp"},
     {"frontend_pipeline": "Webpack"},
-    {"use_htmx_alpine": "y"},
-    {"use_htmx_alpine": "n"},
+    {"use_htmx_alpine_tailwind": "y"},
+    {"use_htmx_alpine_tailwind": "n"},
     {"use_celery": "y"},
     {"use_celery": "n"},
     {"mail_catcher": "None"},
@@ -454,39 +454,50 @@ def test_pre_commit_without_heroku(cookies, context):
     assert "uv-pre-commit" not in data
 
 
-def test_htmx_alpine_enabled(cookies, context):
-    result = cookies.bake(extra_context={**context, "use_htmx_alpine": "y"})
+def test_htmx_alpine_tailwind_enabled(cookies, context):
+    result = cookies.bake(extra_context={**context, "use_htmx_alpine_tailwind": "y"})
     assert result.exit_code == 0
 
     base_settings = (result.project_path / "config" / "settings" / "base.py").read_text()
     assert "django_htmx" in base_settings
     assert "HtmxMiddleware" in base_settings
+    assert "crispy_tailwind" in base_settings
+    assert "crispy_bootstrap5" not in base_settings
+    assert 'CRISPY_TEMPLATE_PACK = "tailwind"' in base_settings
 
     base_html = (result.project_path / context["project_slug"] / "templates" / "base.html").read_text()
     assert "htmx_script" in base_html
     assert "alpinejs" in base_html
+    assert "tailwindcss" in base_html
     assert "hx-headers" in base_html
     assert "csrf_token" in base_html
+    assert "cdnjs.cloudflare.com/ajax/libs/bootstrap" not in base_html
 
     home_html = (result.project_path / context["project_slug"] / "templates" / "pages" / "home.html").read_text()
     assert "x-data" in home_html
+    assert "bg-blue-600" in home_html
 
     requirements = (result.project_path / "pyproject.toml").read_text()
     assert "django-htmx" in requirements
+    assert "crispy-tailwind" in requirements
 
 
-def test_htmx_alpine_disabled(cookies, context):
-    result = cookies.bake(extra_context={**context, "use_htmx_alpine": "n"})
+def test_htmx_alpine_tailwind_disabled(cookies, context):
+    result = cookies.bake(extra_context={**context, "use_htmx_alpine_tailwind": "n"})
     assert result.exit_code == 0
 
     base_settings = (result.project_path / "config" / "settings" / "base.py").read_text()
     assert "django_htmx" not in base_settings
     assert "HtmxMiddleware" not in base_settings
+    assert "crispy_tailwind" not in base_settings
+    assert "crispy_bootstrap5" in base_settings
 
     base_html = (result.project_path / context["project_slug"] / "templates" / "base.html").read_text()
     assert "htmx_script" not in base_html
     assert "alpinejs" not in base_html
     assert "hx-headers" not in base_html
+    assert "tailwindcss" not in base_html
+    assert "cdnjs.cloudflare.com/ajax/libs/bootstrap" in base_html
 
     home_html = (result.project_path / context["project_slug"] / "templates" / "pages" / "home.html").read_text()
     assert "x-data" not in home_html

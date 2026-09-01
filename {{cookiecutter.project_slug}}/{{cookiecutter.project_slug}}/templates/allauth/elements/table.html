@@ -1,6 +1,6 @@
 {% raw %}{% load allauth %}
 
-<table class="table">
+<table class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}min-w-full divide-y divide-gray-200{% else %}table{% endif %}{% raw %}">
   {% slot %}
 {% endslot %}
 </table>{% endraw %}

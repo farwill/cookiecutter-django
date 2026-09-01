@@ -1,6 +1,6 @@
 {% raw %}{% extends "base.html" %}
 {% load i18n %}
-{% block bodyclass %}bg-light{% endblock bodyclass %}
+{% block bodyclass %}{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}bg-gray-100{% else %}bg-light{% endif %}{% raw %}{% endblock bodyclass %}
 
 {% block css %}{{ block.super }}{% endblock css %}
 {% block title %}
@@ -9,23 +9,59 @@
   {% endblock head_title %}
 {% endblock title %}
 {% block body %}
-  <div class="d-flex justify-content-center h-100 py-4">
-    <div class="col-md-4 py-4 my-4 px-4">
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-      {% block content %}
-      {% endblock content %}
-      {% block extra_body %}
-      {% endblock extra_body %}
+  {% endraw %}
+  {%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+    {% raw %}
+    <div class="flex h-full justify-center py-4">
+      <div class="my-4 w-full max-w-md px-4 py-4">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="mb-4 flex items-start justify-between rounded-md border px-4 py-3
+                        {% if message.tags == 'error' %}
+                          border-red-200 bg-red-50 text-red-800
+                        {% elif message.tags == 'success' %}
+                          border-green-200 bg-green-50 text-green-800
+                        {% else %}
+                          border-gray-200 bg-gray-50 text-gray-800
+                        {% endif %}"
+                 x-data>
+              <span>{{ message }}</span>
+              <button class="ml-4 text-lg leading-none"
+                      type="button"
+                      @click="$el.parentElement.remove()"
+                      aria-label="Close">×</button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+        {% block extra_body %}
+        {% endblock extra_body %}
+      </div>
     </div>
-  </div>
+    {% endraw %}
+  {%- else %}
+    {% raw %}
+    <div class="d-flex justify-content-center h-100 py-4">
+      <div class="col-md-4 py-4 my-4 px-4">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+              {{ message }}
+              <button type="button"
+                      class="btn-close"
+                      data-bs-dismiss="alert"
+                      aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+        {% block extra_body %}
+        {% endblock extra_body %}
+      </div>
+    </div>
+    {% endraw %}
+  {%- endif %}
+  {% raw %}
 {% endblock body %}{% endraw %}

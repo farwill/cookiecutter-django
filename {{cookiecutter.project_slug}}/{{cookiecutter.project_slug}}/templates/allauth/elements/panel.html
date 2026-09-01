@@ -1,9 +1,9 @@
 {% raw %}{% load allauth %}
 
 <section>
-  <div class="card mb-4">
-    <div class="card-body">
-      <h2 class="card-title">
+  <div class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm{% else %}card mb-4{% endif %}{% raw %}">
+    <div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="card-body"{% endif %}{% raw %}>
+      <h2 class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}mb-3 text-lg font-semibold text-gray-900{% else %}card-title{% endif %}{% raw %}">
         {% slot title %}
       {% endslot %}
     </h2>

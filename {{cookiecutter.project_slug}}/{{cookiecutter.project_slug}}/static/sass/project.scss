@@ -1,5 +1,7 @@
+{%- if cookiecutter.use_htmx_alpine_tailwind != 'y' %}
 @import 'custom_bootstrap_vars';
 @import '~bootstrap/scss/bootstrap';
+{%- endif %}
 
 // project specific CSS goes here
 
@@ -34,7 +36,7 @@ $red: #b94a48;
   border-color: $dark-pink;
   color: $red;
 }
-{%- if cookiecutter.use_htmx_alpine == 'y' %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
 
 [x-cloak] {
   display: none !important;

@@ -21,14 +21,14 @@
   {% endif %}
   {% raw %}
 </h1>
-<form class="form-horizontal"
+<form class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}space-y-4{% else %}form-horizontal{% endif %}{% raw %}"
       method="post"
       action="{% url 'users:update' %}">
   {% csrf_token %}
   {{ form|crispy }}
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn btn-primary">Update</button>
+  <div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="control-group"{% endif %}{% raw %}>
+    <div{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind != 'y' %} class="controls"{% endif %}{% raw %}>
+      <button type="submit" class="{% endraw %}{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700{% else %}btn btn-primary{% endif %}{% raw %}">Update</button>
     </div>
   </div>
 </form>

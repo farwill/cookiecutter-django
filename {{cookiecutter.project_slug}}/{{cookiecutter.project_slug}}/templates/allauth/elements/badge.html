@@ -1,6 +1,12 @@
 {% raw %}{% load allauth %}
 
-<span class="badge {% if 'success' in attrs.tags %}bg-success{% endif %} {% if 'warning' in attrs.tags %}bg-warning{% endif %} {% if 'secondary' in attrs.tags %}bg-secondary{% endif %} {% if 'danger' in attrs.tags %}bg-danger{% endif %} {% if 'primary' in attrs.tags %}bg-primary{% endif %}">
+<span {% endraw %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+  {% raw %}class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium text-white {% if 'success' in attrs.tags %}bg-green-600{% endif %} {% if 'warning' in attrs.tags %}bg-yellow-500{% endif %} {% if 'secondary' in attrs.tags %}bg-gray-600{% endif %} {% if 'danger' in attrs.tags %}bg-red-600{% endif %} {% if 'primary' in attrs.tags %}bg-blue-600{% endif %}"{% endraw %}
+{%- else %}
+  {% raw %}class="badge {% if 'success' in attrs.tags %}bg-success{% endif %} {% if 'warning' in attrs.tags %}bg-warning{% endif %} {% if 'secondary' in attrs.tags %}bg-secondary{% endif %} {% if 'danger' in attrs.tags %}bg-danger{% endif %} {% if 'primary' in attrs.tags %}bg-primary{% endif %}"{% endraw %}
+{%- endif %}
+{% raw %}>
   {% slot %}
 {% endslot %}
 </span>{% endraw %}

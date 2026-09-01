@@ -1,6 +1,6 @@
 # farwill/cookiecutter-django
 
-This fork tracks [cookiecutter/cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django) and adds an optional **HTMX + Alpine.js** stack. Bootstrap 5 stays as the CSS framework. PostgreSQL is already the only database in upstream.
+This fork tracks [cookiecutter/cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django) and adds an optional **HTMX + Alpine.js + Tailwind CSS** stack. When the option is off, Bootstrap 5 remains as in upstream. PostgreSQL is already the only database in upstream.
 
 ## Generate a project
 
@@ -8,7 +8,7 @@ This fork tracks [cookiecutter/cookiecutter-django](https://github.com/cookiecut
 uvx cookiecutter https://github.com/farwill/cookiecutter-django --checkout htmx-alpine
 ```
 
-When prompted, keep `use_htmx_alpine` as `y` (the default).
+When prompted, keep `use_htmx_alpine_tailwind` as `y` (the default).
 
 ## Git remotes
 
@@ -31,7 +31,7 @@ git remote add origin https://github.com/farwill/cookiecutter-django.git
 | Branch | Role |
 | --- | --- |
 | `main` / `master` | Fast-forward mirror of `upstream/main`. No fork-only commits. |
-| `htmx-alpine` | Fork customizations (`use_htmx_alpine` and related files). |
+| `htmx-alpine` | Fork customizations (`use_htmx_alpine_tailwind` and related files). |
 
 Do **not** commit HTMX/Alpine work onto `main`/`master`. That keeps `git merge --ff-only upstream/main` working.
 
@@ -52,10 +52,10 @@ git fetch upstream
 git merge upstream/main
 ```
 
-Resolve conflicts by keeping the `{% if cookiecutter.use_htmx_alpine == 'y' %}` (and matching Python `{%- if ... %}`) blocks. Find every fork change with:
+Resolve conflicts by keeping the `{% if cookiecutter.use_htmx_alpine_tailwind == 'y' %}` (and matching Python `{%- if ... %}`) blocks. Find every fork change with:
 
 ```bash
-git grep use_htmx_alpine
+git grep use_htmx_alpine_tailwind
 ```
 
 Then:
@@ -66,11 +66,11 @@ git push origin htmx-alpine
 
 ## What this fork changes
 
-All fork-specific logic is gated on `use_htmx_alpine` so turning it off generates a project close to upstream.
+All fork-specific logic is gated on `use_htmx_alpine_tailwind` so turning it off generates a project close to upstream.
 
-- `cookiecutter.json` — `use_htmx_alpine` (`y` / `n`, default `y`)
-- `requirements/base.txt` — `django-htmx`
-- `config/settings/base.py` — `django_htmx` app + `HtmxMiddleware`
-- `templates/base.html` — `htmx_script`, Alpine.js, CSRF `hx-headers` on `<body>`
+- `cookiecutter.json` — `use_htmx_alpine_tailwind` (`y` / `n`, default `y`)
+- `requirements/base.txt` — `django-htmx` and `crispy-tailwind`
+- `config/settings/base.py` — `django_htmx`, `HtmxMiddleware`, `crispy_tailwind`
+- `templates/base.html` — Tailwind CSS, `htmx_script`, Alpine.js, CSRF `hx-headers` on `<body>`
 - `static/js/project.js` — re-init Alpine after HTMX swaps
 - `templates/pages/home.html` — small Alpine demo when the option is on

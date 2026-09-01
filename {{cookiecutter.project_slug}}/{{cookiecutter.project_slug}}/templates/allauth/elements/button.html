@@ -6,14 +6,26 @@
                       {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
                       {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
                       {% if attrs.type %}type="{{ attrs.type }}"{% endif %}
-                      class="btn
+                      {% endraw %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+                      {% raw %}class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium
+{% if 'success' in attrs.tags %}bg-green-600 text-white hover:bg-green-700
+{% elif 'warning' in attrs.tags %}bg-yellow-500 text-white hover:bg-yellow-600
+{% elif 'secondary' in attrs.tags %}bg-gray-600 text-white hover:bg-gray-700
+{% elif 'danger' in attrs.tags %}bg-red-600 text-white hover:bg-red-700
+{% else %}bg-blue-600 text-white hover:bg-blue-700
+{% endif %}"{% endraw %}
+{%- else %}
+                      {% raw %}class="btn
 {% if 'success' in attrs.tags %}btn-success
 {% elif 'warning' in attrs.tags %}btn-warning
 {% elif 'secondary' in attrs.tags %}btn-secondary
 {% elif 'danger' in attrs.tags %}btn-danger
 {% elif 'primary' in attrs.tags %}btn-primary
 {% else %}btn-primary
-{% endif %}"
+{% endif %}"{% endraw %}
+{%- endif %}
+{% raw %}
 >
   {% slot %}
   {% endslot %}

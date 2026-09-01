@@ -89,7 +89,11 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+    "crispy_tailwind",
+{%- else %}
     "crispy_bootstrap5",
+{%- endif %}
     "allauth",
     "allauth.account",
     "allauth.mfa",
@@ -108,7 +112,7 @@ THIRD_PARTY_APPS = [
 {%- if cookiecutter.frontend_pipeline == 'Webpack' %}
     "webpack_loader",
 {%- endif %}
-{%- if cookiecutter.use_htmx_alpine == 'y' %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
     "django_htmx",
 {%- endif %}
 ]
@@ -173,7 +177,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
-{%- if cookiecutter.use_htmx_alpine == 'y' %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
     "django_htmx.middleware.HtmxMiddleware",
 {%- endif %}
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -236,8 +240,13 @@ TEMPLATES = [
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
+{%- else %}
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+{%- endif %}
 
 # FIXTURES
 # ------------------------------------------------------------------------------

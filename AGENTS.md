@@ -70,7 +70,7 @@ uv run cookiecutter . --no-input --output-dir=/tmp/debug
 
 ### Key Files
 
-- **`cookiecutter.json`** — All template variables and their choices (project name, Docker, Celery, HTMX + Alpine.js, cloud provider, frontend pipeline, etc.)
+- **`cookiecutter.json`** — All template variables and their choices (project name, Docker, Celery, HTMX + Alpine.js + Tailwind, cloud provider, frontend pipeline, etc.)
 - **`hooks/pre_gen_project.py`** — Pre-generation validation (uses Jinja2 syntax at the top for context manipulation)
 - **`hooks/post_gen_project.py`** — Post-generation cleanup: removes files based on user choices, generates Django secret key, sets DB credentials, modifies package.json and .pre-commit-config.yaml
 - **`{{cookiecutter.project_slug}}/`** — The template directory; files here use Jinja2 conditionals (`{% if cookiecutter.use_celery == 'y' %}`) to include/exclude content

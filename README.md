@@ -1,6 +1,6 @@
 # Cookiecutter Django
 
-> **Fork:** [farwill/cookiecutter-django](https://github.com/farwill/cookiecutter-django) tracks upstream Cookiecutter Django and adds optional **HTMX + Alpine.js** (Bootstrap 5 stays). See [FORK.md](FORK.md) for how to pull upstream updates.
+> **Fork:** [farwill/cookiecutter-django](https://github.com/farwill/cookiecutter-django) tracks upstream Cookiecutter Django and adds optional **HTMX + Alpine.js + Tailwind CSS**. See [FORK.md](FORK.md) for how to pull upstream updates.
 >
 > Generate from this branch:
 >

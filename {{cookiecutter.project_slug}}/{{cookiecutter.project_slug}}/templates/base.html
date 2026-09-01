@@ -1,6 +1,6 @@
 {% raw %}
 {% load static i18n {% endraw %}
-{%- if cookiecutter.use_htmx_alpine == 'y' %}django_htmx {% endif %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}django_htmx {% endif %}
 {%- if cookiecutter.frontend_pipeline == 'Django Compressor' %}compress{%- endif %}{% raw %}%}{% endraw %}
   {%- if cookiecutter.frontend_pipeline == 'Webpack' %}{% raw %}
     {% load render_bundle from webpack_loader %}
@@ -25,7 +25,15 @@
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   {% block css %}
   {%- endraw %}
-  {%- if cookiecutter.frontend_pipeline in ['None', 'Django Compressor'] %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+    {%- raw %}
+    <!-- Tailwind CSS (full utilities; swap for a built CSS file in production if you want a smaller bundle) -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.17/dist/tailwind.min.css"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+  {%- endraw %}
+{%- elif cookiecutter.frontend_pipeline in ['None', 'Django Compressor'] %}
     {%- raw %}
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link rel="stylesheet"
@@ -65,17 +73,17 @@
 {# Placed at the top of the document so pages load faster with defer #}
 {% block javascript %}
 {%- endraw %}
-{% if cookiecutter.frontend_pipeline == 'Gulp' %}
+{% if cookiecutter.frontend_pipeline == 'Gulp' and cookiecutter.use_htmx_alpine_tailwind != 'y' %}
   {% raw %}
   <!-- Vendor dependencies bundled as one file -->
   <script defer src="{% static 'js/vendors.min.js' %}"></script>
 {%- endraw %}
-{% elif cookiecutter.frontend_pipeline == "Webpack" %}
+{% elif cookiecutter.frontend_pipeline == "Webpack" and cookiecutter.use_htmx_alpine_tailwind != 'y' %}
 {% raw %}
 <!-- Vendor dependencies bundled as one file -->
 {% render_bundle 'vendors' 'js' attrs='defer' %}
 {%- endraw %}
-{% else %}
+{% elif cookiecutter.use_htmx_alpine_tailwind != 'y' %}
 {% raw %}
 <!-- Bootstrap JS -->
 <script defer
@@ -86,7 +94,7 @@
 <!-- Your stuff: Third-party javascript libraries go here -->
 {%- endraw %}
 {% endif %}
-{%- if cookiecutter.use_htmx_alpine == 'y' %}
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
   {% raw %}
   {% htmx_script %}
   <script defer
@@ -121,74 +129,157 @@
 {% endblock javascript %}
 </head>
 <body class="{% block bodyclass %}{% endblock bodyclass %}"{% endraw %}
-{%- if cookiecutter.use_htmx_alpine == 'y' %}{% raw %} hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'{% endraw %}{%- endif %}{% raw %}>
+{%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}{% raw %} hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'{% endraw %}{%- endif %}{% raw %}>
   {% block body %}
-  <div class="mb-1">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <div class="container-fluid">
-        <button class="navbar-toggler navbar-toggler-right"
+  {%- endraw %}
+  {%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
+    {% raw %}
+    <header class="relative border-b border-gray-200 bg-white" x-data="{ open: false }">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <a class="text-lg font-semibold text-gray-900" href="{% url 'home' %}">{% endraw %}{{ cookiecutter.project_name }}{% raw %}</a>
+        <button class="inline-flex items-center rounded-md p-2 text-gray-700 hover:bg-gray-100 md:hidden"
                 type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
+                @click="open = !open"
                 aria-controls="navbarSupportedContent"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <span class="sr-only">Open menu</span>
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         </button>
-        <a class="navbar-brand" href="{% url 'home' %}">{% endraw %}{{ cookiecutter.project_name }}{% raw %}</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
+        <ul id="navbarSupportedContent"
+            class="absolute left-0 right-0 top-14 z-10 flex flex-col gap-2 border-b border-gray-200 bg-white px-4 py-3 md:static md:z-auto md:flex md:flex-row md:items-center md:gap-6 md:border-0 md:p-0"
+            :class="open ? 'flex' : 'hidden md:flex'">
+          <li>
+            <a class="text-sm text-gray-700 hover:text-gray-900" href="{% url 'home' %}">Home</a>
+          </li>
+          <li>
+            <a class="text-sm text-gray-700 hover:text-gray-900" href="{% url 'about' %}">About</a>
+          </li>
+          {% if request.user.is_authenticated %}
+            <li>
+              <a class="text-sm text-gray-700 hover:text-gray-900"
+                 href="{% endraw %}{% if cookiecutter.username_type == "email" %}{% raw %}{% url 'users:detail' request.user.pk %}{% endraw %}{% else %}{% raw %}{% url 'users:detail' request.user.username %}{% endraw %}{% endif %}{% raw %}">{% translate "My Profile" %}</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">About</a>
+            <li>
+              {# URL provided by django-allauth/account/urls.py #}
+              <a class="text-sm text-gray-700 hover:text-gray-900" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
             </li>
-            {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link"
-                   href="{% endraw %}{% if cookiecutter.username_type == "email" %}{% raw %}{% url 'users:detail' request.user.pk %}{% endraw %}{% else %}{% raw %}{% url 'users:detail' request.user.username %}{% endraw %}{% endif %}{% raw %}">{% translate "My Profile" %}</a>
-              </li>
-              <li class="nav-item">
+          {% else %}
+            {% if ACCOUNT_ALLOW_REGISTRATION %}
+              <li>
                 {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
-              </li>
-            {% else %}
-              {% if ACCOUNT_ALLOW_REGISTRATION %}
-                <li class="nav-item">
-                  {# URL provided by django-allauth/account/urls.py #}
-                  <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-                </li>
-              {% endif %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                <a id="sign-up-link" class="text-sm text-gray-700 hover:text-gray-900" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
               </li>
             {% endif %}
-          </ul>
+            <li>
+              {# URL provided by django-allauth/account/urls.py #}
+              <a id="log-in-link" class="text-sm text-gray-700 hover:text-gray-900" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <div class="mx-auto max-w-6xl px-4 py-6">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="mb-4 flex items-start justify-between rounded-md border px-4 py-3
+                      {% if message.tags == 'error' %}
+                        border-red-200 bg-red-50 text-red-800
+                      {% elif message.tags == 'success' %}
+                        border-green-200 bg-green-50 text-green-800
+                      {% elif message.tags == 'warning' %}
+                        border-yellow-200 bg-yellow-50 text-yellow-800
+                      {% else %}
+                        border-gray-200 bg-gray-50 text-gray-800
+                      {% endif %}"
+               x-data>
+            <span>{{ message }}</span>
+            <button class="ml-4 text-lg leading-none"
+                    type="button"
+                    @click="$el.parentElement.remove()"
+                    aria-label="Close">×</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% block main %}
+        {% block content %}
+          <p>Use this document as a way to quick start any new project.</p>
+        {% endblock content %}
+      {% endblock main %}
+    </div>
+    {% endraw %}
+  {%- else %}
+    {% raw %}
+    <div class="mb-1">
+      <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler navbar-toggler-right"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">{% endraw %}{{ cookiecutter.project_name }}{% raw %}</a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+              </li>
+              {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link"
+                     href="{% endraw %}{% if cookiecutter.username_type == "email" %}{% raw %}{% url 'users:detail' request.user.pk %}{% endraw %}{% else %}{% raw %}{% url 'users:detail' request.user.username %}{% endraw %}{% endif %}{% raw %}">{% translate "My Profile" %}</a>
+                </li>
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+                </li>
+              {% else %}
+                {% if ACCOUNT_ALLOW_REGISTRATION %}
+                  <li class="nav-item">
+                    {# URL provided by django-allauth/account/urls.py #}
+                    <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+                  </li>
+                {% endif %}
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-          {{ message }}
-          <button type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-    {% block main %}
-      {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
-    {% endblock main %}
-
-  </div>
+      </nav>
+    </div>
+    <div class="container">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% block main %}
+        {% block content %}
+          <p>Use this document as a way to quick start any new project.</p>
+        {% endblock content %}
+      {% endblock main %}
+    </div>
+    {% endraw %}
+  {%- endif %}
+  {% raw %}
   {% endblock body %}
   <!-- /container -->
   {% block modal %}
