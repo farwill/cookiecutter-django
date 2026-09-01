@@ -71,6 +71,6 @@ All fork-specific logic is gated on `use_htmx_alpine_tailwind` so turning it off
 - `cookiecutter.json` — `use_htmx_alpine_tailwind` (`y` / `n`, default `y`)
 - `requirements/base.txt` — `django-htmx` and `crispy-tailwind`
 - `config/settings/base.py` — `django_htmx`, `HtmxMiddleware`, `crispy_tailwind`
-- `templates/base.html` — Tailwind CSS, `htmx_script`, Alpine.js, CSRF `hx-headers` on `<body>`
+- `templates/base.html` — local Tailwind browser runtime, `htmx_script`, Alpine.js, CSRF `hx-headers` on `<body>`
 - `static/js/project.js` — re-init Alpine after HTMX swaps
 - `templates/pages/home.html` — small Alpine demo when the option is on

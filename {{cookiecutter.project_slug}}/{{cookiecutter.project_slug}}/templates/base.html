@@ -27,11 +27,7 @@
   {%- endraw %}
 {%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
     {%- raw %}
-    <!-- Tailwind CSS (full utilities; swap for a built CSS file in production if you want a smaller bundle) -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.17/dist/tailwind.min.css"
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer" />
+    <script src="{% static 'js/vendor/tailwind-browser.js' %}"></script>
   {%- endraw %}
 {%- elif cookiecutter.frontend_pipeline in ['None', 'Django Compressor'] %}
     {%- raw %}
@@ -97,10 +93,7 @@
 {%- if cookiecutter.use_htmx_alpine_tailwind == 'y' %}
   {% raw %}
   {% htmx_script %}
-  <script defer
-          src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.8/cdn.min.js"
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"></script>
+  <script defer src="{% static 'js/vendor/alpine.js' %}"></script>
 {%- endraw %}
 {%- endif %}
 {% raw %}

@@ -417,6 +417,12 @@ def remove_ninja_starter_files():
     Path("{{cookiecutter.project_slug}}", "users", "api", "schema.py").unlink()
 
 
+def remove_htmx_alpine_tailwind_vendor_files():
+    vendor_js = Path("{{ cookiecutter.project_slug }}", "static", "js", "vendor")
+    if vendor_js.exists():
+        shutil.rmtree(vendor_js)
+
+
 def remove_rest_api_files():
     remove_drf_starter_files()
     remove_ninja_starter_files()
@@ -521,6 +527,9 @@ def main():  # noqa: C901, PLR0912, PLR0915
 
     if "{{ cookiecutter.use_async }}".lower() == "n":
         remove_async_files()
+
+    if "{{ cookiecutter.use_htmx_alpine_tailwind }}".lower() == "n":
+        remove_htmx_alpine_tailwind_vendor_files()
 
     setup_dependencies()
 

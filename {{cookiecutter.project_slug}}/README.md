@@ -17,11 +17,13 @@ Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getti
 
 ## HTMX + Alpine.js + Tailwind CSS
 
-This project includes [django-htmx](https://django-htmx.readthedocs.io/) (middleware and the `htmx_script` template tag), Alpine.js, [Tailwind CSS](https://tailwindcss.com/), and CSRF headers on `<body>` so `hx-post` works with Django.
+This project includes [django-htmx](https://django-htmx.readthedocs.io/) (middleware and the `htmx_script` template tag), Alpine.js, [Tailwind CSS](https://tailwindcss.com/) (browser runtime), and CSRF headers on `<body>` so `hx-post` works with Django.
 
 - **HTMX:** `hx-get`, `hx-post`, `hx-target`, and `request.htmx` in views
 - **Alpine.js:** `x-data`, `x-text`, `@click` (re-initialized after HTMX swaps in `static/js/project.js`)
-- **Tailwind CSS:** utility classes for layout and styling (forms use `crispy-tailwind`)
+- **Tailwind CSS:** compiled in the browser from `static/js/vendor/tailwind-browser.js` (no CDN)
+
+See the home page for a small Alpine.js demo.
 
 See the home page for a small Alpine.js demo.
 {%- endif %}

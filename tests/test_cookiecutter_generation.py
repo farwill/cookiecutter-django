@@ -467,11 +467,16 @@ def test_htmx_alpine_tailwind_enabled(cookies, context):
 
     base_html = (result.project_path / context["project_slug"] / "templates" / "base.html").read_text()
     assert "htmx_script" in base_html
-    assert "alpinejs" in base_html
-    assert "tailwindcss" in base_html
+    assert "js/vendor/alpine.js" in base_html
+    assert "js/vendor/tailwind-browser.js" in base_html
     assert "hx-headers" in base_html
     assert "csrf_token" in base_html
+    assert "cdn.jsdelivr.net" not in base_html
     assert "cdnjs.cloudflare.com/ajax/libs/bootstrap" not in base_html
+
+    vendor_dir = result.project_path / context["project_slug"] / "static" / "js" / "vendor"
+    assert (vendor_dir / "tailwind-browser.js").is_file()
+    assert (vendor_dir / "alpine.js").is_file()
 
     home_html = (result.project_path / context["project_slug"] / "templates" / "pages" / "home.html").read_text()
     assert "x-data" in home_html
@@ -494,10 +499,13 @@ def test_htmx_alpine_tailwind_disabled(cookies, context):
 
     base_html = (result.project_path / context["project_slug"] / "templates" / "base.html").read_text()
     assert "htmx_script" not in base_html
-    assert "alpinejs" not in base_html
+    assert "js/vendor/alpine.js" not in base_html
+    assert "js/vendor/tailwind-browser.js" not in base_html
     assert "hx-headers" not in base_html
-    assert "tailwindcss" not in base_html
     assert "cdnjs.cloudflare.com/ajax/libs/bootstrap" in base_html
+
+    vendor_dir = result.project_path / context["project_slug"] / "static" / "js" / "vendor"
+    assert not vendor_dir.exists()
 
     home_html = (result.project_path / context["project_slug"] / "templates" / "pages" / "home.html").read_text()
     assert "x-data" not in home_html
