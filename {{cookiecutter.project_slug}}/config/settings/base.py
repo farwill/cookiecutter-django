@@ -108,6 +108,9 @@ THIRD_PARTY_APPS = [
 {%- if cookiecutter.frontend_pipeline == 'Webpack' %}
     "webpack_loader",
 {%- endif %}
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+    "django_htmx",
+{%- endif %}
 ]
 
 LOCAL_APPS = [
@@ -170,6 +173,9 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+    "django_htmx.middleware.HtmxMiddleware",
+{%- endif %}
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

@@ -1,6 +1,6 @@
 {% raw %}
 {% load static i18n {% endraw %}
-
+{%- if cookiecutter.use_htmx_alpine == 'y' %}django_htmx {% endif %}
 {%- if cookiecutter.frontend_pipeline == 'Django Compressor' %}compress{%- endif %}{% raw %}%}{% endraw %}
   {%- if cookiecutter.frontend_pipeline == 'Webpack' %}{% raw %}
     {% load render_bundle from webpack_loader %}
@@ -86,6 +86,15 @@
 <!-- Your stuff: Third-party javascript libraries go here -->
 {%- endraw %}
 {% endif %}
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+  {% raw %}
+  {% htmx_script %}
+  <script defer
+          src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.8/cdn.min.js"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+{%- endraw %}
+{%- endif %}
 {% raw %}
 <!-- place project specific Javascript in this file -->
 {%- endraw %}
@@ -111,7 +120,8 @@
 {% raw %}
 {% endblock javascript %}
 </head>
-<body class="{% block bodyclass %}{% endblock bodyclass %}">
+<body class="{% block bodyclass %}{% endblock bodyclass %}"{% endraw %}
+{%- if cookiecutter.use_htmx_alpine == 'y' %}{% raw %} hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'{% endraw %}{%- endif %}{% raw %}>
   {% block body %}
   <div class="mb-1">
     <nav class="navbar navbar-expand-md navbar-light bg-light">

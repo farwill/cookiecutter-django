@@ -34,3 +34,9 @@ $red: #b94a48;
   border-color: $dark-pink;
   color: $red;
 }
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+
+[x-cloak] {
+  display: none !important;
+}
+{%- endif %}

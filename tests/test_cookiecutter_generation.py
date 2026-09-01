@@ -118,6 +118,8 @@ SUPPORTED_COMBINATIONS = [
     {"frontend_pipeline": "Django Compressor"},
     {"frontend_pipeline": "Gulp"},
     {"frontend_pipeline": "Webpack"},
+    {"use_htmx_alpine": "y"},
+    {"use_htmx_alpine": "n"},
     {"use_celery": "y"},
     {"use_celery": "n"},
     {"mail_catcher": "None"},
@@ -450,3 +452,41 @@ def test_pre_commit_without_heroku(cookies, context):
     data = pre_commit_config.read_text()
 
     assert "uv-pre-commit" not in data
+
+
+def test_htmx_alpine_enabled(cookies, context):
+    result = cookies.bake(extra_context={**context, "use_htmx_alpine": "y"})
+    assert result.exit_code == 0
+
+    base_settings = (result.project_path / "config" / "settings" / "base.py").read_text()
+    assert "django_htmx" in base_settings
+    assert "HtmxMiddleware" in base_settings
+
+    base_html = (result.project_path / context["project_slug"] / "templates" / "base.html").read_text()
+    assert "htmx_script" in base_html
+    assert "alpinejs" in base_html
+    assert "hx-headers" in base_html
+    assert "csrf_token" in base_html
+
+    home_html = (result.project_path / context["project_slug"] / "templates" / "pages" / "home.html").read_text()
+    assert "x-data" in home_html
+
+    requirements = (result.project_path / "pyproject.toml").read_text()
+    assert "django-htmx" in requirements
+
+
+def test_htmx_alpine_disabled(cookies, context):
+    result = cookies.bake(extra_context={**context, "use_htmx_alpine": "n"})
+    assert result.exit_code == 0
+
+    base_settings = (result.project_path / "config" / "settings" / "base.py").read_text()
+    assert "django_htmx" not in base_settings
+    assert "HtmxMiddleware" not in base_settings
+
+    base_html = (result.project_path / context["project_slug"] / "templates" / "base.html").read_text()
+    assert "htmx_script" not in base_html
+    assert "alpinejs" not in base_html
+    assert "hx-headers" not in base_html
+
+    home_html = (result.project_path / context["project_slug"] / "templates" / "pages" / "home.html").read_text()
+    assert "x-data" not in home_html

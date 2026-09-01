@@ -1,3 +1,30 @@
 {% raw %}{% extends "base.html" %}
 
 {% endraw %}
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+{% raw %}
+{% block content %}
+  <p>Use this document as a way to quick start any new project.</p>
+  <div class="card my-4">
+    <div class="card-body">
+      <h2 class="h5 card-title">HTMX + Alpine.js</h2>
+      <div class="mb-3" x-data="{ count: 0 }">
+        <p class="mb-2">
+          Alpine.js counter: <strong x-text="count"></strong>
+        </p>
+        <button class="btn btn-primary btn-sm" type="button" @click="count++">Increment</button>
+      </div>
+      <p class="text-muted small mb-0">
+        HTMX is available on every page. Use
+        <code>hx-get</code>
+        /
+        <code>hx-post</code>
+        in templates and
+        <code>request.htmx</code>
+        in views.
+      </p>
+    </div>
+  </div>
+{% endblock content %}
+{% endraw %}
+{%- endif %}

@@ -1,5 +1,11 @@
 # Cookiecutter Django
 
+> **Fork:** [farwill/cookiecutter-django](https://github.com/farwill/cookiecutter-django) tracks upstream Cookiecutter Django and adds optional **HTMX + Alpine.js** (Bootstrap 5 stays). See [FORK.md](FORK.md) for how to pull upstream updates.
+>
+> Generate from this branch:
+>
+>     uvx cookiecutter https://github.com/farwill/cookiecutter-django --checkout htmx-alpine
+
 [![Build Status](https://img.shields.io/github/actions/workflow/status/cookiecutter/cookiecutter-django/ci.yml?branch=main)](https://github.com/cookiecutter/cookiecutter-django/actions/workflows/ci.yml?query=branch%3Amain)
 [![Documentation Status](https://readthedocs.org/projects/cookiecutter-django/badge/?version=latest)](https://cookiecutter-django.readthedocs.io/en/latest/?badge=latest)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/cookiecutter/cookiecutter-django/main.svg)](https://results.pre-commit.ci/latest/github/cookiecutter/cookiecutter-django/main)

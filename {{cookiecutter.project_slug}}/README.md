@@ -13,6 +13,18 @@ License: {{cookiecutter.open_source_license}}
 ## Settings
 
 Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+
+## HTMX + Alpine.js
+
+This project includes [django-htmx](https://django-htmx.readthedocs.io/) (middleware and the `htmx_script` template tag), Alpine.js, and CSRF headers on `<body>` so `hx-post` works with Django.
+
+- **HTMX:** `hx-get`, `hx-post`, `hx-target`, and `request.htmx` in views
+- **Alpine.js:** `x-data`, `x-text`, `@click` (re-initialized after HTMX swaps in `static/js/project.js`)
+- **Bootstrap 5** remains the CSS framework
+
+See the home page for a small Alpine.js demo.
+{%- endif %}
 
 ## Basic Commands
 

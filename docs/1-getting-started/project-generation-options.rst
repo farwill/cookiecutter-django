@@ -115,6 +115,14 @@ frontend_pipeline:
 
 Both Gulp and Webpack support Bootstrap recompilation with real-time variables alteration.
 
+use_htmx_alpine:
+    Include `django-htmx`, HTMX (via the `htmx_script` template tag), and Alpine.js.
+    CSRF is sent on every HTMX request through `hx-headers` on ``<body>``.
+    Bootstrap 5 remains the CSS framework. The choices are:
+
+    1. y
+    2. n
+
 use_celery:
     Indicates whether the project should be configured to use Celery_.
 

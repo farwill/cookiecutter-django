@@ -11,3 +11,9 @@
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+{%- if cookiecutter.use_htmx_alpine == 'y' %}
+
+[x-cloak] {
+  display: none !important;
+}
+{%- endif %}
